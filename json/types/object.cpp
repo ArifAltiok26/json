@@ -2,6 +2,7 @@
 #include "string.h"
 #include "null.h"
 #include <map>
+#include <algorithm>
 namespace json
 {
     bool operator<(const String &lhs, const String &rhs)
@@ -37,6 +38,20 @@ namespace json
             return "{" + retval + "}";
         }
 
+        std::vector<std::string> keys() const
+        {
+            std::vector<std::string> retval;
+            std::transform(container.begin(), container.end(), std::back_inserter(retval), [](const Container::value_type &item)
+                           { return item.first.value(); });
+            return retval;
+        }
+
+        bool exists(const std::string &key)
+        {
+            auto iter = container.find(key);
+            return iter != container.end();
+        }
+
     private:
         Container container;
     };
@@ -59,6 +74,16 @@ namespace json
     std::string Object::stringify() const
     {
         return impl->stringify();
+    }
+
+    std::vector<std::string> Object::keys() const
+    {
+        return impl->keys();
+    }
+
+    bool Object::exists(const std::string &key) const
+    {
+        return impl->exists(key);
     }
 
 } // namespace json

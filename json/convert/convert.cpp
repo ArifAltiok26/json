@@ -1,13 +1,14 @@
-#include "utils.h"
-#include "string.h"
-#include "number.h"
-#include "boolean.h"
-#include "null.h"
+#include "convert.h"
+#include "types/string.h"
+#include "types/number.h"
+#include "types/boolean.h"
+#include "types/null.h"
 namespace json
 {
-    std::string stringify(const Data &data)
+
+    DataPtr convert(const std::string &value)
     {
-        return data.stringify();
+        return std::make_shared<String>(value);
     }
 
     DataPtr convert(const char *value)
@@ -36,10 +37,4 @@ namespace json
     {
         return std::make_shared<Boolean>(value);
     }
-}
-
-std::ostream &operator<<(std::ostream &out, const json::Data &data)
-{
-    out << json::stringify(data);
-    return out;
 }
