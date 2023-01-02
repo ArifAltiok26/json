@@ -1,4 +1,5 @@
 #include "number.h"
+#include "data_fwd.h"
 namespace json
 {
     template <typename ValueType>
@@ -26,6 +27,7 @@ namespace json
 
     using IntNumber = TNumber<int>;
     using FloatNumber = TNumber<float>;
+    using DoubleNumber = TNumber<double>;
 
     class Number::Impl
     {
@@ -60,6 +62,11 @@ namespace json
         *this = value;
     }
 
+    Number::Number(double value) : Number()
+    {
+        *this = value;
+    }
+
     Number::~Number()
     {
         delete impl;
@@ -72,6 +79,12 @@ namespace json
     }
 
     Number &Number::operator=(float value)
+    {
+        (*impl) = std::make_shared<FloatNumber>(value);
+        return *this;
+    }
+
+    Number &Number::operator=(double value)
     {
         (*impl) = std::make_shared<FloatNumber>(value);
         return *this;

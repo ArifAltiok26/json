@@ -1,11 +1,12 @@
 #include <iostream>
-#include <json/string.h>
+#include <json/object.h>
 #include <json/utils.h>
-#include <json/null.h>
-
 int main(int argc, char const *argv[])
 {
-    json::Boolean number;
-    std::cout << number << std::endl;
+    json::Object object;
+
+    object["test"] = json::convert(false);
+    std::cout << object << std::endl;
+
     return 0;
 }
