@@ -11,6 +11,8 @@ namespace json
 
         ~Object();
 
+        DataPtr &at(const std::string &key);
+
         DataPtr &operator[](const std::string &key);
 
         std::string stringify() const override final;

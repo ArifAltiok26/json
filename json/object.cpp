@@ -66,9 +66,14 @@ namespace json
         delete impl;
     }
 
-    DataPtr &Object::operator[](const std::string &key)
+    DataPtr &Object::at(const std::string &key)
     {
         return impl->at(key);
+    }
+
+    DataPtr &Object::operator[](const std::string &key)
+    {
+        return at(key);
     }
 
     std::string Object::stringify() const

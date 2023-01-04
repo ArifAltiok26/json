@@ -54,9 +54,14 @@ namespace json
         delete impl;
     }
 
-    DataPtr &Array::operator[](size_t index)
+    DataPtr &Array::at(size_t index)
     {
         return impl->at(index);
+    }
+
+    DataPtr &Array::operator[](size_t index)
+    {
+        return at(index);
     }
 
     std::string Array::stringify() const

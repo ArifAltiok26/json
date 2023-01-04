@@ -52,27 +52,18 @@ namespace json
         impl = new Impl;
     }
 
-    Number::Number(int value) : Number()
-    {
-        *this = value;
-    }
-
-    Number::Number(float value) : Number()
-    {
-        *this = value;
-    }
-
-    Number::Number(double value) : Number()
-    {
-        *this = value;
-    }
-
     Number::~Number()
     {
         delete impl;
     }
 
     Number &Number::operator=(int value)
+    {
+        (*impl) = std::make_shared<IntNumber>(value);
+        return *this;
+    }
+
+    Number &Number::operator=(long value)
     {
         (*impl) = std::make_shared<IntNumber>(value);
         return *this;

@@ -6,12 +6,14 @@ namespace json
     {
     public:
         Number();
-        Number(int value);
-        Number(float value);
-        Number(double value);
+
+        template <typename ValueType>
+        Number(ValueType value);
+
         ~Number();
 
         Number &operator=(int value);
+        Number &operator=(long value);
         Number &operator=(float value);
         Number &operator=(double value);
 
@@ -21,4 +23,10 @@ namespace json
         class Impl;
         Impl *impl;
     };
+
+    template <typename ValueType>
+    Number::Number(ValueType value) : Number()
+    {
+        *this = value;
+    }
 } // namespace json

@@ -10,6 +10,8 @@ namespace json
 
         ~Array();
 
+        DataPtr &at(size_t index);
+
         DataPtr &operator[](size_t index);
 
         std::string stringify() const override final;
