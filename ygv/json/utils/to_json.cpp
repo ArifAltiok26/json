@@ -30,10 +30,12 @@ namespace ygv
         {
             return std::make_shared<IntNumber>(value);
         }
+
         DataPtr to_json(float value)
         {
             return std::make_shared<FloatNumber>(value);
         }
+
         DataPtr to_json(double value)
         {
             return std::make_shared<FloatNumber>(value);
