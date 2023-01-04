@@ -6,6 +6,14 @@ project(${PROJECT_ID})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-file(GLOB_RECURSE SrcFiles ./*.cpp)
+add_subdirectory(json)
+
+file(GLOB SrcFiles ./*.cpp)
+set(
+    PROJECT_LIBS
+    json
+)
 
 add_library(${PROJECT_NAME} ${SrcFiles})
+
+target_link_libraries(${PROJECT_NAME} ${PROJECT_LIBS})

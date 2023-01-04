@@ -10,13 +10,14 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_subdirectory(json)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+add_subdirectory(ygv)
+
 set(
     PROJECT_LIBS
-    json
+    ygv
 )
 
 add_executable(${PROJECT_NAME} main.cpp)
