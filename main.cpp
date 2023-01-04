@@ -1,7 +1,9 @@
+#include <iostream>
 #include "ygv/json/types/array.h"
 #include "ygv/json/variable.h"
 #include "ygv/json/stringify.h"
-#include <iostream>
+#include "ygv/json/version.h"
+#include "ygv/version.h"
 struct Foo_t
 {
     std::string name;
@@ -18,6 +20,9 @@ ygv::json::DataPtr to_json(const Foo_t &foo)
 
 int main(int argc, char const *argv[])
 {
+    std::cout << ygv::version() << std::endl;
+    std::cout << ygv::json::version() << std::endl;
+
     ygv::json::Variable var;
     var = std::vector<Foo_t>{{"Test_1", 1}, {"Test_2", 2}};
     std::cout << var << std::endl;
