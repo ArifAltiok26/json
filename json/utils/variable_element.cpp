@@ -1,6 +1,6 @@
 #include "variable_element.h"
-#include "array.h"
-#include "object.h"
+#include "../types/array.h"
+#include "../types/object.h"
 namespace json
 {
 

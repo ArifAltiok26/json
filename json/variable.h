@@ -1,9 +1,9 @@
 #pragma once
-#include "variable_element.h"
+#include "utils/variable_element.h"
 namespace json
 {
 
-    class Variable
+    class Variable : public Data
     {
     public:
         Variable();

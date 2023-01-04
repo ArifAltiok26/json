@@ -1,9 +1,9 @@
 #pragma once
-#include "data_fwd.h"
-#include "to_json.h"
+#include "../types/data_fwd.h"
+#include "../utils/to_json.h"
 namespace json
 {
-    class VariableElement
+    class VariableElement : public Data
     {
     public:
         VariableElement(DataPtr &data);

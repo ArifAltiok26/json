@@ -1,7 +1,7 @@
 #pragma once
-#include "null.h"
-#include "number.h"
-#include "boolean.h"
-#include "string.h"
-#include "array.h"
-#include "object.h"
+#include "types/null.h"
+#include "types/number.h"
+#include "types/boolean.h"
+#include "types/string.h"
+#include "types/array.h"
+#include "types/object.h"

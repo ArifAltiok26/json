@@ -1,6 +1,6 @@
 #pragma once
-#include "object.h"
-#include "array.h"
+#include "../types/object.h"
+#include "../types/array.h"
 
 template <typename ValueType>
 void to_object(json::Object &object, const ValueType &value);
