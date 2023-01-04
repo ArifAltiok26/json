@@ -7,10 +7,7 @@ namespace ygv
         class Null : public Data
         {
         public:
-            std::string serialize() const override final
-            {
-                return "Null";
-            }
+            std::string serialize() const override final;
         };
     }
 }

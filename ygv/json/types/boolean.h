@@ -7,19 +7,13 @@ namespace ygv
         class Boolean : public Data
         {
         public:
-            Boolean() = default;
+            Boolean();
 
-            Boolean(bool value) : m_value(value) {}
+            Boolean(bool value);
 
-            std::string serialize() const override final
-            {
-                return m_value ? "true" : "false";
-            }
+            std::string serialize() const override final;
 
-            bool value() const
-            {
-                return m_value;
-            }
+            bool value() const;
 
         private:
             bool m_value;

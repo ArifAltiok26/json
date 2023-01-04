@@ -2,7 +2,6 @@
 #include "ygv/json/variable.h"
 #include "ygv/json/stringify.h"
 #include <iostream>
-#include <vector>
 struct Foo_t
 {
     std::string name;

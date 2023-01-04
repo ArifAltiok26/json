@@ -11,9 +11,9 @@ namespace ygv
         public:
             using Container = std::vector<DataPtr>;
 
-            const Container::value_type operator[](size_t index) const;
-
             Container::value_type &operator[](size_t index);
+
+            const Container::value_type operator[](size_t index) const;
 
             std::string serialize() const override final;
 

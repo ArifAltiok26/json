@@ -7,26 +7,17 @@ namespace ygv
         class String : public Data
         {
         public:
-            String() = default;
+            String();
 
-            String(const char *value) : m_value(value) {}
+            String(const char *value);
 
-            String(const std::string &value) : m_value(value) {}
+            String(const std::string &value);
 
-            std::string serialize() const override final
-            {
-                return "\"" + m_value + "\"";
-            }
+            std::string serialize() const override final;
 
-            std::string value() const
-            {
-                return m_value;
-            }
+            std::string value() const;
 
-            bool operator==(const String &other) const
-            {
-                return m_value == other.m_value;
-            }
+            bool operator==(const String &other) const;
 
         private:
             std::string m_value;
