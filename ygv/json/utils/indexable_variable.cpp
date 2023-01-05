@@ -72,6 +72,16 @@ namespace ygv
             return m_data->serialize();
         }
 
+        DataPtr &IndexableVariable::operator*()
+        {
+            return m_data;
+        }
+
+        const DataPtr IndexableVariable::operator*() const
+        {
+            return m_data;
+        }
+
     } // namespace json
 
 } // namespace ygv

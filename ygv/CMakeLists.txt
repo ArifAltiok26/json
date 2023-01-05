@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 get_filename_component(PROJECT_ID ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
 set(YGV_VERSION "1.0.0")
+set(YGV_JSON_VERSION "1.0.1")
 
 project(${PROJECT_ID})
 

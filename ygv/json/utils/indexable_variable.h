@@ -32,10 +32,9 @@ namespace ygv
 
             std::string serialize() const override final;
 
-            const DataPtr operator*() const
-            {
-                return m_data;
-            }
+            DataPtr &operator*();
+
+            const DataPtr operator*() const;
 
         private:
             DataPtr &m_data;

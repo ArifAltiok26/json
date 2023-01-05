@@ -1,4 +1,4 @@
-#pragma once
+#include "version.h"
 namespace ygv
 {
     namespace json

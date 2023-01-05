@@ -5,10 +5,16 @@ namespace ygv
 {
     namespace json
     {
+
+        struct ToJsonMethodNotImplemented : public std::runtime_error
+        {
+            using std::runtime_error::runtime_error;
+        };
+
         template <typename ValueType>
         DataPtr to_json(ValueType value)
         {
-            throw std::runtime_error(std::string("Not Implemented to_json function for class of ") + typeid(value).name());
+            throw ToJsonMethodNotImplemented(std::string("class of ") + typeid(value).name());
         }
 
         DataPtr to_json(DataPtr value);
