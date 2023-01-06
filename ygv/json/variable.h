@@ -12,13 +12,13 @@ namespace ygv
 
             Variable(const DataPtr &data);
 
+            Variable &operator=(DataPtr data);
+
             template <typename ValueType>
             Variable(const ValueType &value) : Variable()
             {
                 *this = value;
             }
-
-            Variable &operator=(DataPtr data);
 
             template <typename ValueType>
             Variable &operator=(ValueType value)
