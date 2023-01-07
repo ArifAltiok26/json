@@ -10,13 +10,24 @@ namespace ygv
     namespace json
     {
 
+        struct JsonParseError : public std::runtime_error
+        {
+            using std::runtime_error::runtime_error;
+        };
+
         Variable Parser::parse(const std::string &raw_content)
         {
-            Tokenizer tokenizer;
+            static Tokenizer tokenizer;
             std::string content = ignoreSpecialCharacter(raw_content);
             auto tokens = tokenizer.tokenize(content);
             std::stack<TokenType> operators;
             std::stack<DataPtr> operands;
+
+            auto pushNewOperand = [&operators, &operands](DataPtr data)
+            {
+                operands.push(data);
+                operators.push(TokenType::Comma);
+            };
 
             for (auto iter = tokens.rbegin(); iter != tokens.rend(); iter++)
             {
@@ -54,13 +65,16 @@ namespace ygv
                     {
                         if (!operands.empty())
                         {
-                            auto pair = std::dynamic_pointer_cast<Pair>(operands.top());
-                            if (!pair)
+
+                            if (auto pair = std::dynamic_pointer_cast<Pair>(operands.top()))
                             {
-                                throw "123";
+                                object[pair->key()] = pair->value();
+                                operands.pop();
                             }
-                            object[pair->key()] = pair->value();
-                            operands.pop();
+                            else
+                            {
+                                throw JsonParseError("Object started literal was found but previous operand not a pair");
+                            }
                         }
                         operators.pop();
                     }
@@ -69,49 +83,38 @@ namespace ygv
                 break;
                 case TokenType::Colon:
                 {
-                    DataPtr data = operands.top();
                     Token key = *(iter + 1);
                     if (key.type() == TokenType::String)
                     {
+                        DataPtr data = operands.top();
                         operands.pop();
+                        pushNewOperand(std::make_shared<Pair>(key.content(), data));
                         iter++;
-                        operands.push(std::make_shared<Pair>(key.content(), data));
-                        operators.push(TokenType::Comma);
                     }
                     else
                     {
-                        throw "123";
+                        throw JsonParseError("Colon literal was found but previous operand not a pair");
                     }
                 }
                 break;
 
                 case TokenType::String:
-                    operands.push(std::make_shared<String>(content));
-                    operators.push(TokenType::Comma);
+                    pushNewOperand(std::make_shared<String>(content));
                     break;
                 case TokenType::IntNumber:
-                    operands.push(std::make_shared<IntNumber>(std::stoi(content)));
-                    operators.push(TokenType::Comma);
+                    pushNewOperand(std::make_shared<IntNumber>(std::stoi(content)));
                     break;
                 case TokenType::FloatNumber:
-                    operands.push(std::make_shared<FloatNumber>(std::stof(content)));
-                    operators.push(TokenType::Comma);
+                    pushNewOperand(std::make_shared<FloatNumber>(std::stof(content)));
                     break;
                 case TokenType::Boolean:
-                    operands.push(std::make_shared<Boolean>(content == "true" ? true : false));
-                    operators.push(TokenType::Comma);
+                    pushNewOperand(std::make_shared<Boolean>(content == "true" ? true : false));
                     break;
                 case TokenType::Null:
-                    operands.push(std::make_shared<Null>());
-                    operators.push(TokenType::Comma);
+                    pushNewOperand(std::make_shared<Null>());
                     break;
                 }
             }
-
-            struct JsonParseError : public std::runtime_error
-            {
-                using std::runtime_error::runtime_error;
-            };
 
             Variable retval;
             if (operands.size() > 1)

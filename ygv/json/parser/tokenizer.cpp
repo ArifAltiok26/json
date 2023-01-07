@@ -5,7 +5,9 @@ namespace ygv
     {
         std::vector<Token> Tokenizer::tokenize(const std::string &content)
         {
-            reset();
+            literal.clear();
+            isInString = false;
+            std::vector<Token> tokens;
             for (const auto ch : content)
             {
                 switch (ch)
@@ -17,41 +19,35 @@ namespace ygv
                     tokens.emplace_back(TokenType::Array_Started);
                     break;
                 case '}':
-                    flushLiteral();
+                    flushLiteral(tokens);
                     tokens.emplace_back(TokenType::Object_Ended);
                     break;
                 case ']':
-                    flushLiteral();
+                    flushLiteral(tokens);
                     tokens.emplace_back(TokenType::Array_Ended);
                     break;
                 case ',':
-                    flushLiteral();
+                    flushLiteral(tokens);
                     tokens.emplace_back(TokenType::Comma);
                     break;
                 case '"':
                     isInString = true;
-                    flushLiteral();
+                    flushLiteral(tokens);
                     isInString = false;
                     break;
                 case ':':
-                    flushLiteral();
+                    flushLiteral(tokens);
                     tokens.emplace_back(TokenType::Colon);
                     break;
                 default:
                     literal += ch;
                 }
             }
-            flushLiteral();
-            return tokens;
+            flushLiteral(tokens);
+            return std::move(tokens);
         }
 
-        void Tokenizer::reset()
-        {
-            tokens.clear();
-            literal.clear();
-            isInString = false;
-        }
-        void Tokenizer::flushLiteral()
+        void Tokenizer::flushLiteral(std::vector<Token> &tokens)
         {
             if (!literal.empty())
             {

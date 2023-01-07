@@ -11,12 +11,10 @@ namespace ygv
             std::vector<Token> tokenize(const std::string &content);
 
         private:
-            void reset();
-            void flushLiteral();
+            void flushLiteral(std::vector<Token> &tokens);
 
         private:
             bool isInString;
-            std::vector<Token> tokens;
             std::string literal;
         };
     } // namespace json

@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include "ygv/json/json.h"
+#include <sstream>
 int main(int argc, char const *argv[])
 {
 
@@ -12,7 +13,15 @@ int main(int argc, char const *argv[])
     // std::string raw_content = "true";
     // std::string raw_content = "false";
 
-    Variable variable = parse(raw_content);
+    std::stringstream iss;
+    iss << "{";
+    iss << "'value':123"
+        << ",";
+    iss << "\"name\":\"dummy\""
+        << ",";
+    iss << "'state':" << std::boolalpha << true;
+    iss << "}";
+    Variable variable = parse(iss);
     std::cout << variable << std::endl;
 
     return 0;
