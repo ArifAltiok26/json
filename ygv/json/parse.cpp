@@ -1,12 +1,14 @@
 #include "parse.h"
-#include "ygv/json/types/types.h"
+#include "json/parser/parser.h"
 namespace ygv
 {
     namespace json
     {
-        DataPtr parse(const std::string &content)
+        static Parser parser;
+        Variable parse(const std::string &content)
         {
-            return std::make_shared<Null>();
+            static Parser parser;
+            return parser.parse(content);
         }
     } // namespace json
 } // namespace ygv

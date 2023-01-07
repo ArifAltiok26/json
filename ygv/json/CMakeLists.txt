@@ -14,6 +14,7 @@ file(GLOB SrcFiles
     core/*.cpp
     types/*.cpp
     utils/*.cpp
+    parser/*.cpp
 )
 
 set(
