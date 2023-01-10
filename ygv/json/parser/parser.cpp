@@ -29,6 +29,14 @@ namespace ygv
                 operators.push(TokenType::Comma);
             };
 
+            auto popOperand = [&operators, &operands]
+            {
+                auto data = operands.top();
+                operands.pop();
+                operators.pop();
+                return data;
+            };
+
             for (auto iter = tokens.rbegin(); iter != tokens.rend(); iter++)
             {
                 auto [type, content] = **iter;
@@ -41,55 +49,49 @@ namespace ygv
 
                 case TokenType::Array_Started:
                 {
-                    std::shared_ptr<Array> data = std::make_shared<Array>();
-                    Array &array = *data;
+                    std::shared_ptr<Array> array = std::make_shared<Array>();
+                    Array &arrRef = *array;
                     int counter = 0;
-                    while (operators.top() != TokenType::Array_Ended)
+                    while (operators.top() == TokenType::Comma)
                     {
-                        if (!operands.empty())
-                        {
-                            array[counter++] = operands.top();
-                            operands.pop();
-                        }
-                        operators.pop();
+                        arrRef[counter++] = popOperand();
                     }
-                    operands.push(data);
+                    operators.pop();
+                    pushNewOperand(array);
                 }
                 break;
                 case TokenType::Object_Started:
                 {
-
-                    std::shared_ptr<Object> data = std::make_shared<Object>();
-                    Object &object = *data;
-                    while (operators.top() != TokenType::Object_Ended)
+                    std::stack<std::shared_ptr<Pair>> pairs;
+                    while (operators.top() == TokenType::Comma)
                     {
-                        if (!operands.empty())
-                        {
-
-                            if (auto pair = std::dynamic_pointer_cast<Pair>(operands.top()))
-                            {
-                                object[pair->key()] = pair->value();
-                                operands.pop();
-                            }
-                            else
-                            {
-                                throw JsonParseError("Object started literal was found but previous operand not a pair");
-                            }
-                        }
-                        operators.pop();
+                        if (auto pair = std::dynamic_pointer_cast<Pair>(popOperand()))
+                            pairs.push(std::move(pair));
+                        else
+                            throw JsonParseError("Object started literal was found but previous operand not a pair");
                     }
-                    operands.push(data);
+
+                    operators.pop();
+
+                    std::shared_ptr<Object> object = std::make_shared<Object>();
+                    Object &objectRef = *object;
+                    while (!pairs.empty())
+                    {
+                        auto pair = pairs.top();
+                        pairs.pop();
+                        objectRef[pair->key()] = pair->value();
+                    }
+
+                    pushNewOperand(object);
                 }
                 break;
                 case TokenType::Colon:
                 {
-                    Token key = *(iter + 1);
+                    Token key = *(++iter);
                     if (key.type() == TokenType::String)
                     {
-                        DataPtr data = operands.top();
-                        operands.pop();
+                        DataPtr data = popOperand();
                         pushNewOperand(std::make_shared<Pair>(key.content(), data));
-                        iter++;
                     }
                     else
                     {
