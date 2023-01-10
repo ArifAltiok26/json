@@ -20,6 +20,10 @@ int main(int argc, char const *argv[])
     iss << "\"name\":\"dummy\""
         << ",";
     iss << "'state':" << std::boolalpha << true;
+    iss << ","
+        << "'nested':{'value':321}";
+    iss << ","
+        << "'nested_other':{'value':111}";
     iss << "}";
     Variable variable = parse(iss);
     std::cout << variable << std::endl;
